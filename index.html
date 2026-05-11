@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Divya G D — Project Manager & AI-Enabled PM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0f0e0c;
+    --ink2: #3a3832;
+    --ink3: #7a7670;
+    --paper: #f5f2ed;
+    --paper2: #ede9e2;
+    --paper3: #e3dfd7;
+    --rule: #d4cfc6;
+    --accent: #b8430a;
+    --accent2: #e86030;
+    --accent-pale: #fdf0eb;
+    --teal: #0d6e5a;
+    --teal-pale: #e8f5f1;
+    --blue: #1a4f8a;
+    --blue-pale: #eaf0f9;
+    --amber: #8a5f0a;
+    --amber-pale: #fdf5e0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* ── HEADER ── */
+  header {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 64px 32px 0;
+    position: relative;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1.5px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(42px, 7vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .tagline {
+    font-size: 17px;
+    color: var(--ink2);
+    font-weight: 300;
+    margin: 20px 0 36px;
+    max-width: 520px;
+    line-height: 1.7;
+    border-left: 2px solid var(--accent);
+    padding-left: 16px;
+  }
+
+  /* ── PILL ROW ── */
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 48px;
+  }
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+  }
+  .pill-accent { background: var(--accent); color: #fff; }
+  .pill-teal { background: var(--teal); color: #fff; }
+  .pill-outline { border: 1.5px solid var(--rule); color: var(--ink2); background: transparent; }
+
+  /* ── DIVIDER ── */
+  .rule {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 0 0 48px;
+  }
+
+  /* ── MAIN GRID ── */
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .section-head h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--ink);
+    font-weight: 400;
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--ink3);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── CARDS ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 20px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--accent2); transform: translateY(-2px); }
+
+  .card-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  .icon-accent { background: var(--accent-pale); }
+  .icon-teal   { background: var(--teal-pale); }
+  .icon-blue   { background: var(--blue-pale); }
+  .icon-amber  { background: var(--amber-pale); }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .card-sub {
+    font-size: 12px;
+    color: var(--ink3);
+    line-height: 1.5;
+  }
+
+  /* ── PORTFOLIO STRIP ── */
+  .portfolio-strip {
+    background: var(--ink);
+    border-radius: 12px;
+    padding: 28px 28px 24px;
+    margin-bottom: 48px;
+    color: #f5f2ed;
+    position: relative;
+    overflow: hidden;
+  }
+  .portfolio-strip::before {
+    content: 'VISTARA';
+    position: absolute;
+    right: -10px;
+    top: -14px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 88px;
+    color: rgba(255,255,255,0.04);
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.04em;
+  }
+  .portfolio-strip h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    color: #f5f2ed;
+  }
+  .portfolio-strip p {
+    font-size: 13px;
+    color: rgba(245,242,237,0.6);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .stat { }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--accent2);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: rgba(245,242,237,0.45);
+    letter-spacing: 0.06em;
+    margin-top: 3px;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .dark-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(245,242,237,0.6);
+    letter-spacing: 0.06em;
+  }
+
+  .link-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.15s, transform 0.15s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn-primary { background: var(--accent2); color: #fff; }
+  .btn-ghost { background: rgba(255,255,255,0.08); color: rgba(245,242,237,0.8); border: 1px solid rgba(255,255,255,0.15); }
+  .btn-light { background: var(--accent-pale); color: var(--accent); border: 1px solid rgba(184,67,10,0.2); }
+
+  /* ── SKILLS GRID ── */
+  .skills-section { margin-bottom: 48px; }
+
+  .skill-group {
+    margin-bottom: 20px;
+  }
+  .skill-group-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 10px;
+  }
+  .skill-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .skill-chip {
+    font-size: 12px;
+    padding: 5px 11px;
+    border-radius: 6px;
+    border: 1px solid var(--rule);
+    color: var(--ink2);
+    background: #fff;
+  }
+  .skill-chip.strong {
+    background: var(--paper2);
+    border-color: var(--paper3);
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* ── CERTS ── */
+  .certs-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 48px;
+  }
+  .cert-card {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 14px 16px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.15s;
+  }
+  .cert-card:hover { border-color: var(--teal); }
+  .cert-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--teal);
+    flex-shrink: 0;
+  }
+  .cert-name { font-size: 12px; font-weight: 500; color: var(--ink); line-height: 1.4; }
+  .cert-issuer { font-size: 11px; color: var(--ink3); font-family: 'DM Mono', monospace; letter-spacing: 0.04em; }
+
+  /* ── CONTACT ── */
+  .contact-bar {
+    background: var(--accent-pale);
+    border: 1px solid rgba(184,67,10,0.18);
+    border-radius: 10px;
+    padding: 24px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .contact-bar h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .contact-bar p { font-size: 13px; color: var(--ink2); }
+  .contact-links { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .btn-contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.15s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-contact:hover { opacity: 0.8; }
+  .btn-ink { background: var(--ink); color: var(--paper); }
+  .btn-outline-ink { background: transparent; color: var(--ink); border: 1.5px solid var(--ink2); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 24px 32px 48px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--ink3);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  header, main section, .portfolio-strip, .contact-bar {
+    animation: fadeUp 0.5s ease both;
+  }
+  header { animation-delay: 0.05s; }
+  .portfolio-strip { animation-delay: 0.15s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 540px) {
+    header, main { padding-left: 20px; padding-right: 20px; }
+    header { padding-top: 40px; }
+    h1 { font-size: 38px; }
+    .stat-row { gap: 14px; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: #fff; }
+    .card:hover, .btn:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Open to PM / PMO / Implementation roles · Bengaluru</div>
+  <h1>Divya <em>G D</em></h1>
+  <p class="tagline">Project Manager with 5+ years building delivery systems — and one of the few PMs who has actually shipped AI-agent tooling to automate PM workflows.</p>
+  <div class="pills">
+    <span class="pill pill-accent">Accenture PCS applied</span>
+    <span class="pill pill-teal">AI-enabled PM</span>
+    <span class="pill pill-outline">Agile · Scrum</span>
+    <span class="pill pill-outline">Jira · Confluence</span>
+    <span class="pill pill-outline">8–12 LPA target</span>
+  </div>
+</header>
+
+<hr class="rule" style="max-width:780px;margin:0 auto 0;padding:0 32px;">
+
+<main>
+
+  <!-- ── WHAT MAKES ME DIFFERENT ── -->
+  <section style="margin-bottom:48px;margin-top:48px;">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2>What makes me different</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon icon-accent">
+          <svg width="16" height="16" fill="none" stroke="#b8430a" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="card-title">I built a Python agent as a PM portfolio project</div>
+        <div class="card-sub">Python + Jira REST API + Claude API — built during my job search to retrospectively document 4 years of PM work in Jira. A learning project that also became proof of technical depth.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon icon-teal">
+          <svg width="16" height="16" fill="none" stroke="#0d6e5a" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div class="card-title">Certified across the full AI stack</div>
+        <div class="card-sub">6 Anthropic Academy certifications: AI Fluency, Claude API, MCP Integration, Agentic Workflows, and more. Conceptual depth, not just badge collecting.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon icon-blue">
+          <svg width="16" height="16" fill="none" stroke="#1a4f8a" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div class="card-title">Multi-role density from day one</div>
+        <div class="card-sub">At Vistara I owned vendor, academic partnerships, compliance, and delivery simultaneously — roles a large firm splits across 4 headcount.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon icon-amber">
+          <svg width="16" height="16" fill="none" stroke="#8a5f0a" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="card-title">Outcome-oriented framing</div>
+        <div class="card-sub">Every project documented with stakeholder mapping, sprint velocity, retrospectives, and acceptance criteria — not just task lists.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PORTFOLIO ── -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2>Vistara PM portfolio</h2>
+    </div>
+    <div class="portfolio-strip">
+      <h3>Vistara Animation &amp; VFX — Retrospective PM portfolio</h3>
+      <p>Retrospective documentation of 4 years of PM delivery work (2022–2026), structured into Jira using a custom Python agent built during my job search. Sprints represent logical delivery phases — not real-time iterations. Four epics covering a B.Sc. Animation programme planned for 2026 launch (discontinued due to enrollment shortfall), marketing production, an annual industry event, and a placement pipeline.</p>
+      <div class="stat-row">
+        <div class="stat"><div class="stat-num">4</div><div class="stat-label">Epics</div></div>
+        <div class="stat"><div class="stat-num">42</div><div class="stat-label">Stories</div></div>
+        <div class="stat"><div class="stat-num">9</div><div class="stat-label">Sprints</div></div>
+        <div class="stat"><div class="stat-num">~150</div><div class="stat-label">Story points</div></div>
+        <div class="stat"><div class="stat-num">2022–26</div><div class="stat-label">Period covered</div></div>
+      </div>
+      <div class="tag-row">
+        <span class="dark-tag">Jira (VAI project)</span>
+        <span class="dark-tag">Confluence</span>
+        <span class="dark-tag">Python agent</span>
+        <span class="dark-tag">Jira REST API</span>
+        <span class="dark-tag">Sprint reports</span>
+        <span class="dark-tag">Velocity charts</span>
+        <span class="dark-tag">Acceptance criteria</span>
+        <span class="dark-tag">B.Sc. Animation programme (planned 2026)</span>
+        <span class="dark-tag">Industry placement pipeline</span>
+      </div>
+      <div class="link-row">
+        <a href="YOUR_PORTFOLIO_PDF_LINK" class="btn btn-primary">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Portfolio PDF
+        </a>
+        <a href="https://github.com/divyagowdrudinesh/vistara-pm-agent" class="btn btn-ghost">
+          <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub repo
+        </a>
+        <a href="https://divyagdinesh-software.atlassian.net/jira/software/c/projects/VAI/list?jql=project%20%3D%20VAI%20ORDER%20BY%20created%20DESC" class="btn btn-ghost">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Jira board
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SKILLS ── -->
+  <section class="skills-section">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2>Skills</h2>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-label">Program management</div>
+      <div class="skill-chips">
+        <span class="skill-chip strong">Agile / Scrum</span>
+        <span class="skill-chip strong">PMO operations</span>
+        <span class="skill-chip strong">Sprint planning</span>
+        <span class="skill-chip strong">Stakeholder management</span>
+        <span class="skill-chip">Epic &amp; story writing</span>
+        <span class="skill-chip">Retrospectives</span>
+        <span class="skill-chip">Velocity tracking</span>
+        <span class="skill-chip">Risk management</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-label">AI &amp; automation</div>
+      <div class="skill-chips">
+        <span class="skill-chip strong">Python agentic workflows</span>
+        <span class="skill-chip strong">Claude API</span>
+        <span class="skill-chip strong">MCP integration</span>
+        <span class="skill-chip strong">Prompt engineering</span>
+        <span class="skill-chip">Jira REST API</span>
+        <span class="skill-chip">Conda environments</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-label">Tools</div>
+      <div class="skill-chips">
+        <span class="skill-chip strong">Jira (admin + delivery)</span>
+        <span class="skill-chip strong">Confluence</span>
+        <span class="skill-chip">SQL</span>
+        <span class="skill-chip">Tableau</span>
+        <span class="skill-chip">Google Data Analytics</span>
+        <span class="skill-chip">VS Code</span>
+        <span class="skill-chip">MS Office</span>
+        <span class="skill-chip">NotebookLM</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CERTIFICATIONS ── -->
+  <section style="margin-bottom:48px;">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2>Certifications</h2>
+    </div>
+    <div class="certs-row">
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">AI Fluency</div>
+          <div class="cert-issuer">Anthropic Academy</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">Claude API Architecture</div>
+          <div class="cert-issuer">Anthropic Academy</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">MCP Integration</div>
+          <div class="cert-issuer">Anthropic Academy</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">Agentic AI Workflows</div>
+          <div class="cert-issuer">Anthropic Academy</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot" style="background:var(--amber)"></div>
+        <div>
+          <div class="cert-name">Google Data Analytics</div>
+          <div class="cert-issuer">Google (in progress)</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot" style="background:#1a4f8a"></div>
+        <div>
+          <div class="cert-name">B.E. — Electronics &amp; Comm.</div>
+          <div class="cert-issuer">RV College of Engineering, 2019</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <div class="contact-bar">
+    <div>
+      <h3>Let's talk.</h3>
+      <p>Available for PM, PMO Analyst, and Implementation Manager roles in Bengaluru. 8–12 LPA.</p>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:divyagowdrudinesh@gmail.com" class="btn-contact btn-ink">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email me
+      </a>
+      <a href="https://www.linkedin.com/in/divya-g-d-824b5b367/" class="btn-contact btn-outline-ink">
+        <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="YOUR_RESUME_PDF_LINK" class="btn-contact btn-outline-ink">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Resume PDF
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Divya G D · Project Manager · Bengaluru, Karnataka · divyagdinesh-software.atlassian.net
+</footer>
+
+</body>
+</html>
